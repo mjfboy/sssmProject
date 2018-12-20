@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更改头像</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+    <script src="media/js/jquery.min.js"></script>
+    <script src="media/layui/layui.js"></script>
+    <script type="text/javascript" src="media/js/jquery.min.js"></script>
+</head>
+
+<body>
+<button type="button" class="layui-btn" id="test1">
+    <i class="layui-icon">&#xe67c;</i>上传图片
+</button>
+<script>
+    layui.use(['upload','layer'], function(){
+        var upload = layui.upload;
+        var layer=layui.layer;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: 'uploadphoto.do' //上传接口
+            ,accept:"images"
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code==0){
+                    layer.msg('success',{icon:6});
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+               //layer.msg('error',{icon:5});
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

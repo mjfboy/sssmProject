@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>滴答办公系统-用户角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="media/ztree/css/demo.css">
+    <link rel="stylesheet" href="media/ztree/css/zTreeStyle/zTreeStyle.css">
+    <script src="media/js/jquery.min.js"></script>
+    <script src="media/ztree/js/jquery.ztree.all.js"></script>
+</head>
+<body>
+
+<!--搜索内容区域-->
+<div class="layui-container">
+    <ul id="treeDemo" style="width: 300px;height: 600px;"  class="ztree"></ul>
+
+    <input type="button" id="btn" class="layui-btn layui-btn-danger layui-btn-lg" value="修改角色权限">
+</div>
+
+<script src="media/layui/layui.js"></script>
+
+<SCRIPT type="text/javascript">
+    var layer=null;
+    layui.use('layer', function(){
+         layer=layui.layer;
+        //layer.msg('sss')
+
+
+
+    var setting = {
+        //setting.check.chkboxType = { "Y" : "ps", "N" : "ps" };
+        check: {
+            enable: true,
+            /**
+             * 被勾选时：关联父  关联子
+             取消勾选时：关联父  关联子
+             **/
+                checkboxType:{ "Y" : "ps", "N" : "ps" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        }
+    };
+
+    var zNodes =[
+      /*  { id:1, pId:0, name:"随意勾选 1", open:true},
+        { id:11, pId:1, name:"随意勾选 1-1", open:true},
+        { id:111, pId:11, name:"随意勾选 1-1-1"},
+        { id:112, pId:11, name:"随意勾选 1-1-2"},
+        { id:12, pId:1, name:"随意勾选 1-2", open:true},
+        { id:121, pId:12, name:"随意勾选 1-2-1"},
+        { id:122, pId:12, name:"随意勾选 1-2-2"},
+        { id:2, pId:0, name:"随意勾选 2", checked:true, open:true},
+        { id:21, pId:2, name:"随意勾选 2-1"},
+        { id:22, pId:2, name:"随意勾选 2-2", open:true},
+        { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
+        { id:222, pId:22, name:"随意勾选 2-2-2"},
+        { id:23, pId:2, name:"随意勾选 2-3"}*/
+    ];
+
+    $(document).ready(function(){
+        //获取url传过来的角色id值
+
+        var url=window.location.search;
+        index=url.indexOf("rid");
+
+        var rid=url.substr(index+4);
+        //alert(rid);
+        //ajax查询数据  赋值给nodes
+
+        $.ajax({
+            url:'queryroleauthority.do',
+            type:'post',
+            data:{"rid":rid},
+            cache:false,
+            async:false,
+            success:function (res) {
+
+                /**
+                 * 给树赋值
+                 */
+                zNodes=res.data;
+            }
+
+        });
+
+
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+
+        /**
+         * 修改权限点击事件
+         */
+        $("#btn").click(function(){
+            /**
+             * 获取树
+             */
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            /**
+             * 获取所有选中的节点
+             */
+            var nodes = treeObj.getCheckedNodes(true);
+
+            var aids="";
+            for(var i=0;i<nodes.length;i++){
+                aids+=nodes[i].id;
+                if(i!=nodes.length-1){
+                    aids+=",";
+                }
+            }
+
+            //alert(ids);
+            /**
+             * ajax请求服务器，把 roleid和  所有的权限id传给服务器
+             */
+            $.ajax({
+                url:'editroleauthority.do',
+                data:{"rid":rid,"aids":aids},
+                type:"post",
+                cache:false,
+                success:function (obj) {
+                   // alert(obj.code)
+                    if(obj.code==0){
+                        //成功
+                        layer.confirm("修改成功",
+                            {
+                                btn:['确定'],
+                                btn1:function (index) {
+                                    layer.close(index);
+                                    location.href='rolelimit.html';
+                                }
+                            }
+                            )
+                    }
+
+             else{
+                        layer.alert("失败！",{icon:5})
+                    }
+
+                }
+
+            })
+
+        })
+
+
+
+    });
+
+
+    })
+
+</SCRIPT>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.mapper.TUserMapper">
+    <resultMap id="BaseResultMap" type="com.oa.model.TUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="no" property="no" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="flag" property="flag" jdbcType="INTEGER"/>
+        <result column="headphoto" property="headphoto" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, no, password, name, flag, headphoto
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.oa.model.TUserExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.oa.model.TUserExample">
+        delete from t_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.oa.model.TUser">
+    insert into t_user (id, no, password, 
+      name, flag, headphoto
+      )
+    values (#{id,jdbcType=INTEGER}, #{no,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, #{headphoto,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.oa.model.TUser">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="no != null">
+                no,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="headphoto != null">
+                headphoto,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="no != null">
+                #{no,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="headphoto != null">
+                #{headphoto,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.oa.model.TUserExample" resultType="java.lang.Integer">
+        select count(*) from t_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_user
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.no != null">
+                no = #{record.no,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.flag != null">
+                flag = #{record.flag,jdbcType=INTEGER},
+            </if>
+            <if test="record.headphoto != null">
+                headphoto = #{record.headphoto,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_user
+        set id = #{record.id,jdbcType=INTEGER},
+        no = #{record.no,jdbcType=VARCHAR},
+        password = #{record.password,jdbcType=VARCHAR},
+        name = #{record.name,jdbcType=VARCHAR},
+        flag = #{record.flag,jdbcType=INTEGER},
+        headphoto = #{record.headphoto,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.oa.model.TUser">
+        update t_user
+        <set>
+            <if test="no != null">
+                no = #{no,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=INTEGER},
+            </if>
+            <if test="headphoto != null">
+                headphoto = #{headphoto,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.oa.model.TUser">
+    update t_user
+    set no = #{no,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER},
+      headphoto = #{headphoto,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <select id="queryMenu" parameterType="int" resultType="TAuthorityVO">
+    select a.* from t_authority a
+
+left join t_roleauthority as  ra  on a.id=ra.aid
+
+
+ left join   t_userrole as ul   on ul.rid=ra.rid
+
+ where ul.uid =#{uid} and a.type=1 and a.parentId=0  group by a.id
+  </select>
+
+    <select id="queryChildMenu" parameterType="int" resultType="TAuthorityVO">
+        select * from t_authority where parentId=#{pid} and  type=1
+  </select>
+    <select id="queryAllURv" resultMap="UserAndRoleMap2">
+        select u.*,r.id as rid ,r.info ,r.name as rname,r.parentId from
+        (select * from t_user
+        <where>
+            <if test="flag!=null">
+                and flag=#{flag}
+            </if>
+            <if test="no!=null and no!=''">
+                and no like "%"#{no}"%"
+            </if>
+        </where>
+        limit #{begin},#{limit}
+        )
+        as u left join t_userrole as ur on u.id=ur.uid
+        left join t_role as r on r.id=ur.rid
+    </select>
+    <select id="queryrole" resultType="trole">
+        select *from t_role
+
+
+    </select>
+    <select id="queryroleid" parameterType="int" resultType="trole">
+        select *from t_role where id=#{id}
+
+    </select>
+    <resultMap id="UserAndRoleMap2" type="com.oa.model.TUserRoleVo" extends="BaseResultMap">
+        <collection property="roleList" column="id" javaType="com.oa.model.TRole" resultMap="TRoleMap"/>
+    </resultMap>
+    <resultMap id="TRoleMap" type="com.oa.model.TRole">
+        <id column="rid" property="id"/>
+        <result column="info" property="info"/>
+        <result column="rname" property="name"/>
+        <result column="parentId" property="parentid"/>
+    </resultMap>
+
+    <update id="updateFlag">
+    update t_user set  flag=#{flag}
+    where id=#{id}
+    </update>
+    <delete id="delByid" parameterType="int">
+        delete from t_userrole where uid=#{id}
+    </delete>
+    <insert id="add">
+        insert into t_userrole(uid,rid) values
+        <foreach collection="list" separator="," item="rid">
+            (#{uid},#{rid})
+        </foreach>
+
+    </insert>
+    <select id="queryAllRoles" resultType="com.oa.model.TRole">
+        select *from t_role
+         limit #{begin},#{limit}
+    </select>
+    <select id="cont" resultType="java.lang.Integer">
+        select count(*) from t_role
+    </select>
+    <update id="roleup">
+        update t_role set name =#{name},info=#{info} where id=#{rid}
+
+    </update>
+
+    <delete id="roledel">
+        delete  from  t_role where id=#{id}
+
+    </delete>
+    
+
+    
+    <select id="queryRoleZtree" resultType="ztreeVo">
+  select
+
+  a.id,a.title as name ,
+
+
+   a.parentId as pId,
+
+   true as 'open',
+
+    IF(ra.rid=#{rid},true,false)   as 'checked'
+
+from t_authority as a  LEFT JOIN
+
+(SELECT * from t_roleauthority where rid=#{rid})
+
+
+ as ra on ra.aid=a.id
+
+
+  </select>
+<insert id="inserrole" >
+    insert into t_roleauthority(rid,aid) values
+    <foreach collection="aids" separator="," item="cid">
+        (#{rid},#{cid})
+    </foreach>
+
+
+</insert>
+    <select id="queryauth" resultType="TAuthority">
+    select * from  t_authority
+    </select>
+</mapper>
